@@ -8,4 +8,12 @@ SELECT COUNT(*), `office_address` AS "ufficio" FROM `teachers` GROUP BY `office_
 SELECT AVG(`vote`), `exam_id` FROM `exam_student` GROUP BY `exam_id`
 
 //Contare quanti corsi di laurea ci sono per ogni dipartimento
-SELECT COUNT(`name`),`department_id` FROM `degrees` GROUP BY `department_id`
+SELECT `students`.`id`, `students`.`name`, `students`.`surname`, `courses`.`name`, COUNT(`exam_student`.`vote`) AS `numero_tentativi`
+FROM `students`
+JOIN `exam_student` 
+ON `students`.`id` = `exam_student`.`student_id`
+JOIN `exams` 
+ON `exam_student`.`exam_id` = `exams`.`id`
+JOIN `courses` 
+ON `exams`.`course_id` = `courses`.`id` 
+GROUP BY `students`.`id`, `courses`.`id`
